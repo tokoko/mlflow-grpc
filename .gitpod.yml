@@ -1,0 +1,14 @@
+image:
+  file: .gitpod.Dockerfile
+
+tasks:
+  - init: 'pip install -r requirements.txt'
+    command: 'python model.py && python serve.py'
+
+
+#wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+#chmod +x Miniconda3-latest-Linux-x86_64.sh
+vscode:
+  extensions:
+    - zxh404.vscode-proto3@0.5.3:RT2nlrSGFR1wH2b/dRg82A==
+    - ms-python.python@2020.10.332292344:5ctthQ25Qni5/aAuOIUTYQ==

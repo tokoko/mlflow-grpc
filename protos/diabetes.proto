@@ -1,5 +1,22 @@
+syntax = "proto3"
 
+service MLService {
+    rpc invocations (ModelInput) returns (ModelOutput) {}
+}
 
-service {
-    
+message ModelInput {
+    double age = 1;
+    double sex = 2;
+    double bmi = 3;
+    double bp = 4;
+    double s1 = 5;
+    double s2 = 6;
+    double s3 = 7;
+    double s4 = 8;
+    double s5 = 9;
+    double s6 = 10;
+}
+
+message ModelOutput {
+    double res = 1;
 }
