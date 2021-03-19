@@ -8,4 +8,11 @@ flavors:
     pickled_model: model.pkl
     serialization_format: cloudpickle
     sklearn_version: 0.24.1
-utc_time_created: '2021-03-18 20:53:27.010706'
+signature:
+  inputs: '[{"name": "age", "type": "double"}, {"name": "sex", "type": "double"},
+    {"name": "bmi", "type": "double"}, {"name": "bp", "type": "double"}, {"name":
+    "s1", "type": "double"}, {"name": "s2", "type": "double"}, {"name": "s3", "type":
+    "double"}, {"name": "s4", "type": "double"}, {"name": "s5", "type": "double"},
+    {"name": "s6", "type": "double"}]'
+  outputs: '[{"type": "double"}]'
+utc_time_created: '2021-03-19 13:37:26.457924'

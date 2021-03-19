@@ -24,11 +24,7 @@ regr.fit(diabetes_X, diabetes_y)
 if os.path.exists('model'):
     shutil.rmtree('model')
 
-mlflow.sklearn.save_model(regr, 'model')
+mlflow.sklearn.save_model(regr, 'model', signature=infer_signature(diabetes_X, diabetes_y))
 
-# # Make predictions using the testing set
+# Make predictions using the testing set
 diabetes_y_pred = regr.predict(diabetes_X)
-
-# print(diabetes_y_pred)
-
-print(infer_signature(diabetes_X, diabetes_y))
