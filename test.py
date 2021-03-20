@@ -1,9 +1,15 @@
 from mlflow.pyfunc import load_model
-from mlflowgrpc.grpc import prepare_env
+from mlflow_grpc.server import serve
+from mlflow_grpc.backend import PyFuncGrpcBackend
 
-model = load_model('model')
-prepare_env(model)
+backend = PyFuncGrpcBackend(
+    config=None,
+    workers=1,
+    no_conda=False,
+    install_mlflow=False
+)
 
-from mlflowgrpc.server import serve
+backend.serve('model', port='1', host='localhost')
 
-serve(model)
+# model = load_model('model')
+# serve(model)
