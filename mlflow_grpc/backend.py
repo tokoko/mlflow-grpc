@@ -30,37 +30,27 @@ class PyFuncGrpcBackend(PyFuncBackend):
         self._install_mlflow = install_mlflow
 
 
-    def serve(self, model_uri, port, host):
+    def serve(self, model_uri, port='8000', host='localhost'):
         """
         Serve pyfunc model locally.
         """
         local_path = _download_artifact_from_uri(model_uri)
         local_uri = path_to_local_file_uri(local_path)
-        model = load_model(local_uri)
-        serve(model)
-
-        # NB: Absolute windows paths do not work with mlflow apis, use file uri to ensure
-        # platform compatibility.
   
-        if os.name != "nt":
-            command = (
-                "python -m mlflow_grpc.server"
+        command = (
+                f"python -m mlflow_grpc.server --model-uri {local_uri} --port {port} --host {host} --workers {self._nworkers}"
+            )
+        
+        command_env = os.environ.copy()
+
+        if not self._no_conda and ENV in self._config:
+            print('Starting in conda')
+            conda_env_path = os.path.join(local_path, self._config[ENV])
+            return _execute_in_conda_env(
+                conda_env_path, command, self._install_mlflow, command_env=command_env
             )
         else:
-            command = (
-                "waitress-serve --host={host} --port={port} "
-                "--ident=mlflow mlflow.pyfunc.scoring_server.wsgi:app"
-            ).format(host=host, port=port)
-
-        command_env = os.environ.copy()
-        command_env[scoring_server._SERVER_MODEL_PATH] = local_uri
-        # if not self._no_conda and ENV in self._config:
-        #     conda_env_path = os.path.join(local_path, self._config[ENV])
-        #     return _execute_in_conda_env(
-        #         conda_env_path, command, self._install_mlflow, command_env=command_env
-        #     )
-        # else:
-        #     _logger.info("=== Running command '%s'", command)
+            _logger.info("=== Running command '%s'", command)
         
         if os.name != "nt":
             subprocess.Popen(["bash", "-c", command], env=command_env, cwd='/workspace/mlflow-grpc').wait()

@@ -8,7 +8,7 @@ class MLServer(MLServiceServicer):
 
     def invocations(self, request, context):
         df = proto_message_to_df(request)
-        # print(df)
+
         return ModelOutput(
             rows = [
                 ModelOutputItem(col1=self.model.predict(df).item(0))

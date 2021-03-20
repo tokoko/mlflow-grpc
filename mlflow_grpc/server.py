@@ -8,6 +8,8 @@ import grpc
 import tempfile
 import logging
 import os
+import argparse
+
 
 def prepare_env(model, dirpath):    
     with open(file=os.path.join(dirpath, 'model.proto'), mode='w') as f:
@@ -24,13 +26,13 @@ def prepare_env(model, dirpath):
     sys.path.append(dirpath)
         
 
-def serve(model: PyFuncModel, max_workers=2, port='50051'):
+def serve(model: PyFuncModel, max_workers=2, port='50051', host='localhost'):
     with tempfile.TemporaryDirectory() as dirpath:
         print(dirpath)
         prepare_env(model, dirpath)
 
         from model_pb2_grpc import add_MLServiceServicer_to_server
-        from mlflow_grpc.grpc import MLServer
+        from mlflow_grpc.grpc_server import MLServer
 
         server = grpc.server(futures.ThreadPoolExecutor(max_workers))
         add_MLServiceServicer_to_server(MLServer(model), server)
@@ -40,7 +42,13 @@ def serve(model: PyFuncModel, max_workers=2, port='50051'):
         server.wait_for_termination()
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='grpc server arguments')
+    parser.add_argument('--model-uri', type=str, required=True)
+    parser.add_argument('--workers', type=int)
+    parser.add_argument('--port', type=str)
+    parser.add_argument('--host', type=str)
+    args = parser.parse_args()
+
     logging.basicConfig()    
-    local_uri = 'file:///workspace/mlflow-grpc/model'
-    model = load_model(local_uri)
-    serve(model)
+    model = load_model(args.model_uri)
+    serve(model, max_workers=args.workers, port=args.port, host=args.host)
