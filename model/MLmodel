@@ -15,4 +15,4 @@ signature:
     "double"}, {"name": "s4", "type": "double"}, {"name": "s5", "type": "double"},
     {"name": "s6", "type": "double"}]'
   outputs: '[{"type": "double"}]'
-utc_time_created: '2021-03-19 13:37:26.457924'
+utc_time_created: '2021-03-20 18:49:55.270901'

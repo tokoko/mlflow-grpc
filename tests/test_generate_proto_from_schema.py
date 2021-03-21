@@ -1,5 +1,5 @@
 import pytest
-from mlflowgrpc import schema_to_proto
+from mlflow_grpc.utils import schema_to_proto
 from mlflow.types import Schema, TensorSpec, ColSpec, DataType
 from mlflow.exceptions import MlflowException
 import numpy as np

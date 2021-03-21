@@ -53,6 +53,6 @@ class PyFuncGrpcBackend(PyFuncBackend):
             _logger.info("=== Running command '%s'", command)
         
         if os.name != "nt":
-            subprocess.Popen(["bash", "-c", command], env=command_env, cwd='/workspace/mlflow-grpc').wait()
+            subprocess.Popen(["bash", "-c", command], env=command_env).wait()
         else:
             subprocess.Popen([command.split(" ")], env=command_env).wait()
